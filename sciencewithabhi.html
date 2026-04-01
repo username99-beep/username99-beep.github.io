@@ -1,0 +1,1631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScienceWithAbhi – Learn. Test. Excel.</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0e1a;
+  --bg2: #0f1628;
+  --bg3: #141c35;
+  --card: #141c35;
+  --card2: #1a2340;
+  --border: rgba(99,179,237,0.15);
+  --border2: rgba(99,179,237,0.3);
+  --accent: #4fc3f7;
+  --accent2: #7c4dff;
+  --accent3: #00e5ff;
+  --gold: #ffd740;
+  --green: #69f0ae;
+  --red: #ff5252;
+  --orange: #ff9800;
+  --text: #e8eaf6;
+  --text2: #90a4ae;
+  --text3: #546e7a;
+  --radius: 12px;
+  --radius2: 20px;
+  --shadow: 0 4px 32px rgba(0,0,0,0.4);
+  --glow: 0 0 24px rgba(79,195,247,0.2);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+h1,h2,h3,h4,h5 { font-family: 'Syne', sans-serif; }
+code, .mono { font-family: 'JetBrains Mono', monospace; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* UTILITY */
+.hidden { display: none !important; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border-radius: var(--radius);
+  font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px;
+  cursor: pointer; border: none; transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-primary { background: var(--accent); color: #0a0e1a; }
+.btn-primary:hover { background: var(--accent3); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(79,195,247,0.4); }
+.btn-secondary { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); }
+.btn-secondary:hover { background: rgba(79,195,247,0.1); }
+.btn-purple { background: var(--accent2); color: #fff; }
+.btn-purple:hover { filter: brightness(1.15); }
+.btn-danger { background: var(--red); color: #fff; }
+.btn-danger:hover { filter: brightness(1.1); }
+.btn-sm { padding: 7px 14px; font-size: 13px; }
+.btn-gold { background: var(--gold); color: #0a0e1a; }
+.btn-green { background: var(--green); color: #0a0e1a; }
+
+input, textarea, select {
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--accent); }
+select option { background: var(--bg2); }
+label { font-size: 13px; color: var(--text2); font-weight: 500; display: block; margin-bottom: 6px; }
+.form-group { margin-bottom: 16px; }
+.badge {
+  display: inline-block; padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; font-family: 'Syne', sans-serif;
+  letter-spacing: 0.5px; text-transform: uppercase;
+}
+.badge-blue { background: rgba(79,195,247,0.15); color: var(--accent); }
+.badge-purple { background: rgba(124,77,255,0.15); color: #b388ff; }
+.badge-gold { background: rgba(255,215,64,0.15); color: var(--gold); }
+.badge-green { background: rgba(105,240,174,0.15); color: var(--green); }
+.badge-red { background: rgba(255,82,82,0.15); color: var(--red); }
+.badge-orange { background: rgba(255,152,0,0.15); color: var(--orange); }
+
+/* GLOW LINE */
+.glow-line { height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); margin: 0; }
+
+/* ===== NAVBAR ===== */
+#navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(10,14,26,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 64px;
+}
+.nav-logo {
+  font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px;
+  color: var(--text);
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer;
+}
+.nav-logo .logo-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; align-items: center; gap: 8px; }
+.nav-link {
+  padding: 8px 16px; border-radius: 8px; font-size: 14px; font-weight: 500;
+  color: var(--text2); cursor: pointer; transition: all 0.2s;
+  font-family: 'Syne', sans-serif;
+}
+.nav-link:hover, .nav-link.active { color: var(--accent); background: rgba(79,195,247,0.08); }
+.nav-right { display: flex; align-items: center; gap: 10px; }
+#user-pill {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 14px 6px 8px; border-radius: 30px;
+  background: var(--card); border: 1px solid var(--border2);
+  cursor: pointer; transition: all 0.2s;
+}
+#user-pill:hover { border-color: var(--accent); }
+.user-avatar {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent2), var(--accent));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff; font-family: 'Syne', sans-serif;
+}
+
+/* ===== PAGE SYSTEM ===== */
+.page { display: none; padding-top: 64px; min-height: 100vh; }
+.page.active { display: block; }
+.page-inner { max-width: 1200px; margin: 0 auto; padding: 40px 24px; }
+
+/* ===== HERO ===== */
+#hero {
+  background: var(--bg);
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(79,195,247,0.07) 0%, transparent 60%),
+              radial-gradient(ellipse 60% 80% at 20% 80%, rgba(124,77,255,0.06) 0%, transparent 60%);
+}
+.hero-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 60px; align-items: center; min-height: calc(100vh - 64px);
+  position: relative; z-index: 1;
+}
+.hero-title {
+  font-family: 'Syne', sans-serif; font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800; line-height: 1.1; margin-bottom: 20px;
+}
+.hero-title .line2 { color: var(--accent); }
+.hero-sub { font-size: 17px; color: var(--text2); line-height: 1.7; margin-bottom: 32px; max-width: 480px; }
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-stats { display: flex; gap: 32px; margin-top: 48px; }
+.stat-item { text-align: center; }
+.stat-num { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--accent); }
+.stat-lbl { font-size: 12px; color: var(--text3); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+.hero-visual {
+  display: flex; justify-content: center; align-items: center;
+}
+.hero-card {
+  background: var(--card); border: 1px solid var(--border2);
+  border-radius: var(--radius2); padding: 28px; width: 380px;
+  box-shadow: var(--shadow), var(--glow);
+}
+.hero-card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; margin-bottom: 16px; }
+.mcq-option {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; border-radius: var(--radius);
+  background: var(--bg2); border: 1.5px solid var(--border);
+  margin-bottom: 8px; cursor: pointer; transition: all 0.2s; font-size: 14px;
+}
+.mcq-option:hover { border-color: var(--accent); background: rgba(79,195,247,0.05); }
+.mcq-option.correct { border-color: var(--green); background: rgba(105,240,174,0.08); }
+.mcq-letter {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--bg3); display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; font-family: 'Syne', sans-serif; flex-shrink: 0;
+  color: var(--accent);
+}
+.mcq-option.correct .mcq-letter { background: var(--green); color: #0a0e1a; }
+.progress-bar { height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; margin-top: 16px; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 3px; transition: width 0.5s; }
+
+/* ===== SECTION HEADERS ===== */
+.section-header { text-align: center; margin-bottom: 48px; }
+.section-tag {
+  display: inline-block; padding: 4px 14px; border-radius: 20px;
+  background: rgba(79,195,247,0.1); border: 1px solid rgba(79,195,247,0.3);
+  font-size: 12px; font-weight: 600; color: var(--accent); font-family: 'Syne', sans-serif;
+  letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px;
+}
+.section-title { font-size: clamp(28px, 4vw, 44px); font-weight: 800; margin-bottom: 12px; }
+.section-sub { font-size: 16px; color: var(--text2); max-width: 560px; margin: 0 auto; }
+
+/* ===== CARDS GRID ===== */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius2); padding: 24px;
+  transition: all 0.25s; cursor: pointer; position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+}
+.card:hover { border-color: var(--border2); transform: translateY(-3px); box-shadow: var(--shadow); }
+.card:hover::before { transform: scaleX(1); }
+.card-icon {
+  width: 48px; height: 48px; border-radius: 14px; margin-bottom: 16px;
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+}
+.card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 17px; margin-bottom: 8px; }
+.card-desc { font-size: 14px; color: var(--text2); line-height: 1.6; }
+.card-meta { display: flex; align-items: center; gap: 8px; margin-top: 16px; }
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 2000;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal {
+  background: var(--card2); border: 1px solid var(--border2);
+  border-radius: var(--radius2); padding: 32px; width: 100%;
+  max-width: 560px; max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  position: relative;
+}
+.modal-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 22px; margin-bottom: 24px; }
+.modal-close {
+  position: absolute; top: 20px; right: 20px;
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--bg2); border: 1px solid var(--border);
+  color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center;
+  font-size: 16px; transition: all 0.2s;
+}
+.modal-close:hover { color: var(--text); border-color: var(--accent); }
+.auth-tabs { display: flex; gap: 0; margin-bottom: 28px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.auth-tab {
+  flex: 1; padding: 10px; text-align: center; cursor: pointer;
+  font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px;
+  color: var(--text2); transition: all 0.2s;
+}
+.auth-tab.active { background: var(--accent); color: #0a0e1a; }
+
+/* ===== ADMIN PANEL ===== */
+.panel-grid { display: grid; grid-template-columns: 240px 1fr; gap: 24px; min-height: calc(100vh - 120px); }
+.panel-sidebar {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius2); padding: 20px; height: fit-content;
+  position: sticky; top: 84px;
+}
+.sidebar-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: var(--radius);
+  cursor: pointer; transition: all 0.2s;
+  font-size: 14px; font-weight: 500; color: var(--text2);
+  margin-bottom: 4px;
+}
+.sidebar-item:hover, .sidebar-item.active { background: rgba(79,195,247,0.1); color: var(--accent); }
+.sidebar-item .s-icon { font-size: 18px; width: 24px; text-align: center; }
+.panel-content { min-height: 400px; }
+.panel-section { display: none; }
+.panel-section.active { display: block; }
+.panel-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
+.panel-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 24px; }
+
+/* ===== QUESTION BUILDER ===== */
+.question-form { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius2); padding: 28px; }
+.q-type-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.q-tab {
+  padding: 8px 18px; border-radius: 30px; font-size: 13px; font-weight: 600;
+  cursor: pointer; border: 1.5px solid var(--border); color: var(--text2);
+  transition: all 0.2s; font-family: 'Syne', sans-serif;
+}
+.q-tab.active { border-color: var(--accent); color: var(--accent); background: rgba(79,195,247,0.08); }
+.options-builder { margin-top: 16px; }
+.option-row {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.option-row input[type="radio"], .option-row input[type="checkbox"] {
+  width: auto; cursor: pointer; accent-color: var(--green);
+}
+.option-row .option-input { flex: 1; }
+.option-row .remove-opt {
+  width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--border);
+  background: transparent; color: var(--red); cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: all 0.2s;
+}
+.option-row .remove-opt:hover { background: rgba(255,82,82,0.1); }
+.correct-label { font-size: 12px; color: var(--green); font-weight: 600; white-space: nowrap; }
+
+/* ===== TEST LIST ===== */
+.test-item {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px 22px;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px; gap: 16px; flex-wrap: wrap;
+  transition: border-color 0.2s;
+}
+.test-item:hover { border-color: var(--border2); }
+.test-item-info { flex: 1; }
+.test-item-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+.test-item-meta { font-size: 13px; color: var(--text2); display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+.test-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ===== NOTES ===== */
+.notes-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.note-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px; transition: all 0.2s;
+}
+.note-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.note-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+.note-body { font-size: 14px; color: var(--text2); line-height: 1.6; margin-bottom: 12px; max-height: 80px; overflow: hidden; }
+.note-actions { display: flex; gap: 8px; }
+
+/* ===== STUDENT TEST VIEW ===== */
+.test-take-wrap { max-width: 760px; margin: 0 auto; }
+.test-header-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius2); padding: 28px; margin-bottom: 24px;
+  text-align: center;
+}
+.test-timer {
+  font-family: 'JetBrains Mono', monospace; font-size: 32px; font-weight: 500;
+  color: var(--accent); margin-top: 12px;
+}
+.q-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius2); padding: 24px; margin-bottom: 20px;
+}
+.q-number { font-size: 12px; color: var(--text3); font-weight: 600; font-family: 'Syne', sans-serif; letter-spacing: 1px; margin-bottom: 10px; text-transform: uppercase; }
+.q-text { font-size: 16px; font-weight: 500; margin-bottom: 18px; line-height: 1.6; }
+.q-options { display: flex; flex-direction: column; gap: 10px; }
+.q-opt {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; border-radius: var(--radius);
+  background: var(--bg2); border: 1.5px solid var(--border);
+  cursor: pointer; transition: all 0.2s; font-size: 14px;
+  user-select: none;
+}
+.q-opt:hover { border-color: var(--accent); background: rgba(79,195,247,0.05); }
+.q-opt.selected { border-color: var(--accent); background: rgba(79,195,247,0.1); }
+.q-opt.correct-ans { border-color: var(--green); background: rgba(105,240,174,0.08); }
+.q-opt.wrong-ans { border-color: var(--red); background: rgba(255,82,82,0.08); }
+.q-opt-circle {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 2px solid var(--border2); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 10px;
+  font-weight: 700; font-family: 'Syne', sans-serif;
+}
+.q-opt.selected .q-opt-circle { border-color: var(--accent); background: var(--accent); color: #0a0e1a; }
+.q-opt.correct-ans .q-opt-circle { border-color: var(--green); background: var(--green); color: #0a0e1a; }
+.q-opt.wrong-ans .q-opt-circle { border-color: var(--red); background: var(--red); color: #fff; }
+.saq-textarea { width: 100%; min-height: 120px; resize: vertical; }
+
+/* RESULT CARD */
+.result-card {
+  background: var(--card); border: 1px solid var(--border2);
+  border-radius: var(--radius2); padding: 40px; text-align: center;
+  box-shadow: var(--shadow), var(--glow); max-width: 500px; margin: 40px auto;
+}
+.result-score { font-family: 'Syne', sans-serif; font-size: 72px; font-weight: 800; color: var(--accent); }
+.result-label { font-size: 14px; color: var(--text2); margin-top: 8px; margin-bottom: 24px; }
+.result-breakdown { display: flex; justify-content: center; gap: 28px; padding: 20px; background: var(--bg2); border-radius: var(--radius); }
+.rb-item { text-align: center; }
+.rb-num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; }
+.rb-lbl { font-size: 12px; color: var(--text3); }
+
+/* LEADERBOARD */
+.lb-item {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 18px; border-radius: var(--radius);
+  background: var(--card); border: 1px solid var(--border); margin-bottom: 8px;
+}
+.lb-rank { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; width: 32px; text-align: center; }
+.lb-rank.gold { color: var(--gold); }
+.lb-rank.silver { color: #90a4ae; }
+.lb-rank.bronze { color: var(--orange); }
+.lb-name { flex: 1; font-weight: 500; }
+.lb-score { font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--accent); font-weight: 500; }
+
+/* FEATURES SECTION */
+.features-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+.feat-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius2); padding: 24px; text-align: center; transition: all 0.25s;
+}
+.feat-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.feat-icon { font-size: 36px; margin-bottom: 14px; }
+.feat-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; margin-bottom: 8px; }
+.feat-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+/* TOAST */
+#toast {
+  position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+  background: var(--card2); border: 1px solid var(--border2);
+  border-radius: var(--radius); padding: 14px 20px;
+  font-size: 14px; font-weight: 500;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: var(--shadow); transform: translateY(100px); opacity: 0;
+  transition: all 0.3s; max-width: 340px;
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+#toast.success { border-color: rgba(105,240,174,0.4); }
+#toast.error { border-color: rgba(255,82,82,0.4); }
+
+/* TABS */
+.tabs { display: flex; gap: 4px; margin-bottom: 24px; background: var(--bg2); padding: 4px; border-radius: var(--radius); width: fit-content; }
+.tab-btn {
+  padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600;
+  cursor: pointer; color: var(--text2); transition: all 0.2s; font-family: 'Syne', sans-serif;
+}
+.tab-btn.active { background: var(--card); color: var(--text); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text3); }
+.empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.5; }
+.empty-text { font-size: 15px; font-family: 'Syne', sans-serif; font-weight: 600; }
+.empty-sub { font-size: 13px; margin-top: 6px; }
+
+/* SUBJECT CHIPS */
+.subject-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.subject-chip {
+  padding: 6px 16px; border-radius: 30px;
+  border: 1px solid var(--border); font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; color: var(--text2); font-family: 'Syne', sans-serif;
+}
+.subject-chip:hover, .subject-chip.active { border-color: var(--accent); color: var(--accent); background: rgba(79,195,247,0.08); }
+
+/* SEARCH BAR */
+.search-wrap { position: relative; max-width: 400px; margin-bottom: 24px; }
+.search-wrap input { padding-left: 40px; }
+.search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 16px; }
+
+/* Sections on home page */
+.home-section { padding: 80px 0; }
+.home-section:nth-child(even) { background: var(--bg2); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  #navbar { padding: 0 16px; }
+  .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero-visual { display: none; }
+  .panel-grid { grid-template-columns: 1fr; }
+  .panel-sidebar { position: static; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav id="navbar">
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="logo-icon">⚗️</div>
+    SCIENCE<span>WITHABHI</span>
+  </div>
+  <div class="nav-links" id="main-nav">
+    <div class="nav-link active" onclick="showPage('home'); setActive(this)">Home</div>
+    <div class="nav-link" onclick="showPage('tests'); setActive(this)">Tests</div>
+    <div class="nav-link" onclick="showPage('notes'); setActive(this)">Notes</div>
+    <div class="nav-link" onclick="showPage('leaderboard'); setActive(this)">Leaderboard</div>
+  </div>
+  <div class="nav-right" id="nav-right">
+    <button class="btn btn-secondary btn-sm" onclick="openAuthModal('login')">Log In</button>
+    <button class="btn btn-primary btn-sm" onclick="openAuthModal('signup')">Sign Up</button>
+  </div>
+</nav>
+
+<!-- ===== TOAST ===== -->
+<div id="toast"></div>
+
+<!-- ===== AUTH MODAL ===== -->
+<div class="modal-overlay hidden" id="auth-modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('auth-modal')">✕</button>
+    <h2 class="modal-title">Welcome to ScienceWithAbhi</h2>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Log In</div>
+      <div class="auth-tab" id="tab-signup" onclick="switchAuthTab('signup')">Sign Up</div>
+    </div>
+    <div id="auth-login">
+      <div class="form-group"><label>Username</label><input type="text" id="login-username" placeholder="Enter your username"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="login-password" placeholder="Enter your password"></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px" onclick="doLogin()">Log In →</button>
+      <p style="text-align:center;font-size:13px;color:var(--text3);margin-top:14px">Admin? Use username: <strong style="color:var(--accent)">admin</strong></p>
+    </div>
+    <div id="auth-signup" class="hidden">
+      <div class="form-group"><label>Full Name</label><input type="text" id="signup-name" placeholder="Your name"></div>
+      <div class="form-group"><label>Username</label><input type="text" id="signup-username" placeholder="Choose a username"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="signup-password" placeholder="Create a password"></div>
+      <div class="form-group"><label>Confirm Password</label><input type="password" id="signup-confirm" placeholder="Confirm password"></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px" onclick="doSignup()">Create Account →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== VIEW TEST MODAL ===== -->
+<div class="modal-overlay hidden" id="test-view-modal">
+  <div class="modal" style="max-width:700px">
+    <button class="modal-close" onclick="closeModal('test-view-modal')">✕</button>
+    <div id="test-view-content"></div>
+  </div>
+</div>
+
+<!-- ===== VIEW NOTE MODAL ===== -->
+<div class="modal-overlay hidden" id="note-view-modal">
+  <div class="modal" style="max-width:700px">
+    <button class="modal-close" onclick="closeModal('note-view-modal')">✕</button>
+    <div id="note-view-content"></div>
+  </div>
+</div>
+
+<!-- ===== HOME PAGE ===== -->
+<div class="page active" id="page-home">
+  <!-- HERO -->
+  <section class="home-section" style="padding-top:0">
+    <div class="hero-bg"></div>
+    <div class="page-inner">
+      <div class="hero-grid">
+        <div>
+          <div style="display:inline-block;padding:5px 16px;border-radius:30px;background:rgba(79,195,247,0.1);border:1px solid rgba(79,195,247,0.3);font-size:12px;font-weight:600;color:var(--accent);font-family:'Syne',sans-serif;letter-spacing:1px;text-transform:uppercase;margin-bottom:24px">🔬 Science Learning Platform</div>
+          <h1 class="hero-title">Master Science.<br><span class="line2">Ace Every Test.</span></h1>
+          <p class="hero-sub">Interactive MCQ tests, SAQ papers, study notes — all in one place. Learn smarter with ScienceWithAbhi.</p>
+          <div class="hero-btns">
+            <button class="btn btn-primary" onclick="showPage('tests')">Browse Tests ✦</button>
+            <button class="btn btn-secondary" onclick="openAuthModal('signup')">Join Free</button>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item"><div class="stat-num" id="stat-tests">0</div><div class="stat-lbl">Tests</div></div>
+            <div class="stat-item"><div class="stat-num" id="stat-students">0</div><div class="stat-lbl">Students</div></div>
+            <div class="stat-item"><div class="stat-num" id="stat-notes">0</div><div class="stat-lbl">Notes</div></div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-card">
+            <div class="hero-card-title">⚛️ Sample MCQ — Physics</div>
+            <p style="font-size:14px;color:var(--text2);margin-bottom:14px">What is the SI unit of electric current?</p>
+            <div class="mcq-option"><div class="mcq-letter">A</div> Volt</div>
+            <div class="mcq-option correct"><div class="mcq-letter">B</div> Ampere ✓</div>
+            <div class="mcq-option"><div class="mcq-letter">C</div> Watt</div>
+            <div class="mcq-option"><div class="mcq-letter">D</div> Ohm</div>
+            <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:12px;color:var(--text3)"><span>Q 3/5</span><span>60%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="home-section">
+    <div class="page-inner">
+      <div class="section-header">
+        <div class="section-tag">Features</div>
+        <h2 class="section-title">Everything You Need</h2>
+        <p class="section-sub">A complete platform for science education — tests, notes, results and more.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feat-card"><div class="feat-icon">📝</div><div class="feat-title">MCQ Tests</div><div class="feat-desc">Interactive poll-style multiple choice with instant scoring and explanations.</div></div>
+        <div class="feat-card"><div class="feat-icon">✍️</div><div class="feat-title">SAQ Papers</div><div class="feat-desc">Short answer questions with model answers. Practice descriptive writing.</div></div>
+        <div class="feat-card"><div class="feat-icon">📚</div><div class="feat-title">Study Notes</div><div class="feat-desc">Topic-wise curated notes with rich formatting. Available anytime.</div></div>
+        <div class="feat-card"><div class="feat-icon">🏆</div><div class="feat-title">Leaderboard</div><div class="feat-desc">Track your rank among peers. Compete and improve.</div></div>
+        <div class="feat-card"><div class="feat-icon">⏱️</div><div class="feat-title">Timed Tests</div><div class="feat-desc">Simulate real exam conditions with configurable countdown timers.</div></div>
+        <div class="feat-card"><div class="feat-icon">📊</div><div class="feat-title">Analytics</div><div class="feat-desc">See scores, attempts, and progress across all subjects.</div></div>
+        <div class="feat-card"><div class="feat-icon">🔒</div><div class="feat-title">Student Accounts</div><div class="feat-desc">Sign up, save progress, view all posts from the admin. Always accessible.</div></div>
+        <div class="feat-card"><div class="feat-icon">⚙️</div><div class="feat-title">Admin Tools</div><div class="feat-desc">Full control to create, edit, and publish tests and notes anytime.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENT TESTS PREVIEW -->
+  <section class="home-section">
+    <div class="page-inner">
+      <div class="section-header">
+        <div class="section-tag">Tests</div>
+        <h2 class="section-title">Latest Mock Tests</h2>
+        <p class="section-sub">Jump into a test right away.</p>
+      </div>
+      <div class="cards-grid" id="home-tests-grid">
+        <div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📋</div><div class="empty-text">No tests yet</div><div class="empty-sub">Admin will upload tests soon!</div></div>
+      </div>
+      <div style="text-align:center;margin-top:32px"><button class="btn btn-secondary" onclick="showPage('tests')">View All Tests →</button></div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== TESTS PAGE ===== -->
+<div class="page" id="page-tests">
+  <div class="page-inner">
+    <div class="section-header" style="text-align:left;margin-bottom:32px">
+      <h1 class="section-title">Mock Tests</h1>
+      <p class="section-sub" style="margin:0">Browse all available tests. Click to start!</p>
+    </div>
+    <div class="subject-chips" id="test-subject-filter">
+      <div class="subject-chip active" onclick="filterTests('all',this)">All</div>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Search tests..." id="test-search-input" oninput="filterTests('search',null)">
+    </div>
+    <div id="tests-list-container">
+      <div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">No tests published yet</div><div class="empty-sub">Check back soon!</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NOTES PAGE ===== -->
+<div class="page" id="page-notes">
+  <div class="page-inner">
+    <div class="section-header" style="text-align:left;margin-bottom:32px">
+      <h1 class="section-title">Study Notes</h1>
+      <p class="section-sub" style="margin:0">Topic-wise notes curated by Abhi.</p>
+    </div>
+    <div class="subject-chips" id="note-subject-filter">
+      <div class="subject-chip active" onclick="filterNotes('all',this)">All</div>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" placeholder="Search notes..." id="note-search-input" oninput="filterNotes('search',null)">
+    </div>
+    <div class="notes-grid" id="notes-grid">
+      <div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📚</div><div class="empty-text">No notes uploaded yet</div><div class="empty-sub">Check back soon!</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LEADERBOARD PAGE ===== -->
+<div class="page" id="page-leaderboard">
+  <div class="page-inner" style="max-width:700px">
+    <div class="section-header">
+      <div class="section-tag">Rankings</div>
+      <h1 class="section-title">Leaderboard</h1>
+      <p class="section-sub">Top students by total test scores.</p>
+    </div>
+    <div id="leaderboard-list">
+      <div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-text">No scores yet</div><div class="empty-sub">Complete a test to appear here!</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN PANEL ===== -->
+<div class="page" id="page-admin">
+  <div class="page-inner">
+    <div class="panel-grid">
+      <!-- SIDEBAR -->
+      <div class="panel-sidebar">
+        <div style="font-size:12px;color:var(--text3);font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;font-family:'Syne',sans-serif">Admin Panel</div>
+        <div class="sidebar-item active" onclick="adminSection('dashboard',this)"><span class="s-icon">📊</span> Dashboard</div>
+        <div class="sidebar-item" onclick="adminSection('create-test',this)"><span class="s-icon">➕</span> Create Test</div>
+        <div class="sidebar-item" onclick="adminSection('manage-tests',this)"><span class="s-icon">📋</span> Manage Tests</div>
+        <div class="sidebar-item" onclick="adminSection('create-note',this)"><span class="s-icon">✍️</span> Upload Note</div>
+        <div class="sidebar-item" onclick="adminSection('manage-notes',this)"><span class="s-icon">📚</span> Manage Notes</div>
+        <div class="sidebar-item" onclick="adminSection('students',this)"><span class="s-icon">👥</span> Students</div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+          <button class="btn btn-danger btn-sm" style="width:100%;justify-content:center" onclick="adminLogout()">Log Out</button>
+        </div>
+      </div>
+
+      <!-- MAIN CONTENT -->
+      <div class="panel-content">
+        <!-- DASHBOARD -->
+        <div class="panel-section active" id="admin-dashboard">
+          <div class="panel-top"><h2 class="panel-title">Dashboard</h2><span class="badge badge-blue">Admin</span></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px;margin-bottom:32px">
+            <div class="card" style="cursor:default;padding:20px">
+              <div style="font-size:13px;color:var(--text2);margin-bottom:8px">Total Tests</div>
+              <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--accent)" id="dash-tests">0</div>
+            </div>
+            <div class="card" style="cursor:default;padding:20px">
+              <div style="font-size:13px;color:var(--text2);margin-bottom:8px">Total Notes</div>
+              <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--accent2)" id="dash-notes">0</div>
+            </div>
+            <div class="card" style="cursor:default;padding:20px">
+              <div style="font-size:13px;color:var(--text2);margin-bottom:8px">Students</div>
+              <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--green)" id="dash-students">0</div>
+            </div>
+            <div class="card" style="cursor:default;padding:20px">
+              <div style="font-size:13px;color:var(--text2);margin-bottom:8px">Submissions</div>
+              <div style="font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--gold)" id="dash-submissions">0</div>
+            </div>
+          </div>
+          <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:16px">Recent Submissions</h3>
+          <div id="recent-submissions">
+            <div class="empty-state"><div class="empty-text">No submissions yet</div></div>
+          </div>
+        </div>
+
+        <!-- CREATE TEST -->
+        <div class="panel-section" id="admin-create-test">
+          <div class="panel-top"><h2 class="panel-title">Create Test</h2></div>
+          <div class="question-form">
+            <div class="form-group"><label>Test Title</label><input type="text" id="test-title" placeholder="e.g. Physics Chapter 3 – Optics"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div class="form-group"><label>Subject</label>
+                <select id="test-subject">
+                  <option>Physics</option><option>Chemistry</option><option>Biology</option>
+                  <option>Mathematics</option><option>Environmental Science</option><option>Other</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Duration (minutes)</label><input type="number" id="test-duration" value="30" min="1"></div>
+            </div>
+            <div class="form-group"><label>Description / Instructions</label><textarea id="test-desc" rows="3" placeholder="Brief description or instructions for students..."></textarea></div>
+            
+            <div style="border-top:1px solid var(--border);padding-top:24px;margin-top:8px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+                <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:17px">Questions</h3>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <button class="btn btn-secondary btn-sm" onclick="addQuestion('mcq')">+ MCQ</button>
+                  <button class="btn btn-secondary btn-sm" onclick="addQuestion('saq')">+ SAQ</button>
+                  <button class="btn btn-secondary btn-sm" onclick="addQuestion('truefalse')">+ True/False</button>
+                  <button class="btn btn-secondary btn-sm" onclick="addQuestion('fillblank')">+ Fill Blank</button>
+                </div>
+              </div>
+              <div id="questions-container">
+                <div class="empty-state" id="no-questions-msg"><div class="empty-icon">➕</div><div class="empty-text">No questions yet</div><div class="empty-sub">Click a button above to add questions</div></div>
+              </div>
+            </div>
+            <div style="margin-top:24px;display:flex;gap:12px;justify-content:flex-end">
+              <button class="btn btn-secondary" onclick="clearTestForm()">Clear</button>
+              <button class="btn btn-primary" onclick="saveTest()">Publish Test ✦</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MANAGE TESTS -->
+        <div class="panel-section" id="admin-manage-tests">
+          <div class="panel-top"><h2 class="panel-title">Manage Tests</h2></div>
+          <div id="admin-tests-list">
+            <div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">No tests yet</div></div>
+          </div>
+        </div>
+
+        <!-- CREATE NOTE -->
+        <div class="panel-section" id="admin-create-note">
+          <div class="panel-top"><h2 class="panel-title">Upload Note</h2></div>
+          <div class="question-form">
+            <div class="form-group"><label>Note Title</label><input type="text" id="note-title" placeholder="e.g. Laws of Thermodynamics – Summary"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div class="form-group"><label>Subject</label>
+                <select id="note-subject">
+                  <option>Physics</option><option>Chemistry</option><option>Biology</option>
+                  <option>Mathematics</option><option>Environmental Science</option><option>Other</option>
+                </select>
+              </div>
+              <div class="form-group"><label>Tags (comma separated)</label><input type="text" id="note-tags" placeholder="e.g. thermodynamics, heat, energy"></div>
+            </div>
+            <div class="form-group"><label>Content</label><textarea id="note-content" rows="12" placeholder="Paste or type your note content here. Supports plain text..."></textarea></div>
+            <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:8px">
+              <button class="btn btn-secondary" onclick="clearNoteForm()">Clear</button>
+              <button class="btn btn-primary" onclick="saveNote()">Publish Note ✦</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- MANAGE NOTES -->
+        <div class="panel-section" id="admin-manage-notes">
+          <div class="panel-top"><h2 class="panel-title">Manage Notes</h2></div>
+          <div class="notes-grid" id="admin-notes-list">
+            <div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📚</div><div class="empty-text">No notes yet</div></div>
+          </div>
+        </div>
+
+        <!-- STUDENTS -->
+        <div class="panel-section" id="admin-students">
+          <div class="panel-top"><h2 class="panel-title">Students</h2></div>
+          <div id="students-list">
+            <div class="empty-state"><div class="empty-icon">👥</div><div class="empty-text">No students registered</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TAKE TEST PAGE ===== -->
+<div class="page" id="page-take-test">
+  <div class="page-inner">
+    <div class="test-take-wrap" id="take-test-inner"></div>
+  </div>
+</div>
+
+<!-- ===== STUDENT DASHBOARD ===== -->
+<div class="page" id="page-student-dash">
+  <div class="page-inner">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:32px;flex-wrap:wrap">
+      <div class="user-avatar" style="width:56px;height:56px;font-size:20px" id="std-avatar"></div>
+      <div>
+        <h1 style="font-family:'Syne',sans-serif;font-weight:800;font-size:26px" id="std-welcome">Welcome back!</h1>
+        <p style="color:var(--text2);font-size:14px" id="std-username-display"></p>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:16px;margin-bottom:32px">
+      <div class="card" style="cursor:default;padding:20px"><div style="font-size:13px;color:var(--text2);margin-bottom:6px">Tests Taken</div><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--accent)" id="std-count">0</div></div>
+      <div class="card" style="cursor:default;padding:20px"><div style="font-size:13px;color:var(--text2);margin-bottom:6px">Best Score</div><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--green)" id="std-best">—</div></div>
+      <div class="card" style="cursor:default;padding:20px"><div style="font-size:13px;color:var(--text2);margin-bottom:6px">Avg Score</div><div style="font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--gold)" id="std-avg">—</div></div>
+    </div>
+    <h3 style="font-family:'Syne',sans-serif;font-weight:700;font-size:18px;margin-bottom:16px">My Test History</h3>
+    <div id="student-history">
+      <div class="empty-state"><div class="empty-icon">🎯</div><div class="empty-text">No tests taken yet</div><div class="empty-sub">Go to Tests to start!</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ===== STATE =====
+let DB = {
+  tests: [],
+  notes: [],
+  users: [{ username: 'admin', password: 'admin123', name: 'Admin', role: 'admin', id: 'admin' }],
+  submissions: [],
+  nextTestId: 1,
+  nextNoteId: 1
+};
+let currentUser = null;
+let currentTest = null;
+let testAnswers = {};
+let timerInterval = null;
+let activeTestFilter = 'all';
+let activeNoteFilter = 'all';
+let editingTestId = null;
+
+// ===== PERSIST =====
+function save() { try { localStorage.setItem('swa_db', JSON.stringify(DB)); } catch(e){} }
+function load() {
+  try {
+    const d = localStorage.getItem('swa_db');
+    if (d) { const p = JSON.parse(d); DB = { ...DB, ...p }; }
+  } catch(e) {}
+  const u = localStorage.getItem('swa_user');
+  if (u) { try { currentUser = JSON.parse(u); } catch(e){} }
+}
+
+// ===== NAVIGATION =====
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo(0,0);
+  if (id === 'home') renderHomePage();
+  if (id === 'tests') renderTestsPage();
+  if (id === 'notes') renderNotesPage();
+  if (id === 'leaderboard') renderLeaderboard();
+  if (id === 'admin') renderAdminDashboard();
+  if (id === 'student-dash') renderStudentDash();
+}
+function setActive(el) {
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ===== AUTH =====
+function openAuthModal(tab) {
+  document.getElementById('auth-modal').classList.remove('hidden');
+  switchAuthTab(tab);
+}
+function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+function switchAuthTab(tab) {
+  document.getElementById('auth-login').classList.toggle('hidden', tab !== 'login');
+  document.getElementById('auth-signup').classList.toggle('hidden', tab !== 'signup');
+  document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+  document.getElementById('tab-signup').classList.toggle('active', tab !== 'login');
+}
+function doLogin() {
+  const u = document.getElementById('login-username').value.trim();
+  const p = document.getElementById('login-password').value;
+  if (!u || !p) return toast('Please fill in all fields', 'error');
+  const user = DB.users.find(x => x.username === u && x.password === p);
+  if (!user) return toast('Invalid username or password', 'error');
+  currentUser = user;
+  localStorage.setItem('swa_user', JSON.stringify(user));
+  closeModal('auth-modal');
+  updateNavForUser();
+  toast('Welcome back, ' + user.name + '! 👋', 'success');
+  if (user.role === 'admin') showPage('admin');
+  else showPage('student-dash');
+}
+function doSignup() {
+  const name = document.getElementById('signup-name').value.trim();
+  const u = document.getElementById('signup-username').value.trim();
+  const p = document.getElementById('signup-password').value;
+  const c = document.getElementById('signup-confirm').value;
+  if (!name || !u || !p || !c) return toast('Please fill all fields', 'error');
+  if (p !== c) return toast('Passwords do not match', 'error');
+  if (p.length < 4) return toast('Password too short (min 4 chars)', 'error');
+  if (DB.users.find(x => x.username === u)) return toast('Username already taken', 'error');
+  const newUser = { username: u, password: p, name, role: 'student', id: 'u' + Date.now() };
+  DB.users.push(newUser);
+  currentUser = newUser;
+  localStorage.setItem('swa_user', JSON.stringify(newUser));
+  save();
+  closeModal('auth-modal');
+  updateNavForUser();
+  toast('Account created! Welcome, ' + name + '! 🎉', 'success');
+  showPage('student-dash');
+}
+function doLogout() {
+  currentUser = null;
+  localStorage.removeItem('swa_user');
+  updateNavForUser();
+  showPage('home');
+  toast('Logged out successfully', 'success');
+}
+function adminLogout() { doLogout(); }
+function updateNavForUser() {
+  const r = document.getElementById('nav-right');
+  if (!currentUser) {
+    r.innerHTML = `<button class="btn btn-secondary btn-sm" onclick="openAuthModal('login')">Log In</button><button class="btn btn-primary btn-sm" onclick="openAuthModal('signup')">Sign Up</button>`;
+  } else if (currentUser.role === 'admin') {
+    r.innerHTML = `<div id="user-pill" onclick="showPage('admin')"><div class="user-avatar">${currentUser.name[0].toUpperCase()}</div><span style="font-size:13px;font-weight:600">Admin</span></div>`;
+  } else {
+    r.innerHTML = `<div id="user-pill" onclick="showPage('student-dash')"><div class="user-avatar">${currentUser.name[0].toUpperCase()}</div><span style="font-size:13px;font-weight:600">${currentUser.name}</span></div><button class="btn btn-secondary btn-sm" onclick="doLogout()">Logout</button>`;
+  }
+}
+
+// ===== TOAST =====
+function toast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = (type === 'success' ? '✓ ' : '✕ ') + msg;
+  t.className = 'show ' + type;
+  clearTimeout(t._to);
+  t._to = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ===== ADMIN SECTIONS =====
+function adminSection(name, el) {
+  document.querySelectorAll('.sidebar-item').forEach(x => x.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.panel-section').forEach(x => x.classList.remove('active'));
+  document.getElementById('admin-' + name).classList.add('active');
+  if (name === 'dashboard') renderAdminDashboard();
+  if (name === 'manage-tests') renderAdminTests();
+  if (name === 'manage-notes') renderAdminNotes();
+  if (name === 'students') renderStudentsList();
+}
+
+// ===== QUESTION BUILDER =====
+let qCount = 0;
+function addQuestion(type) {
+  document.getElementById('no-questions-msg')?.remove();
+  qCount++;
+  const qId = 'q' + qCount;
+  const div = document.createElement('div');
+  div.className = 'q-card'; div.id = 'qblock-' + qId;
+  div.style.marginBottom = '20px';
+  const typeLabels = { mcq: 'Multiple Choice', saq: 'Short Answer', truefalse: 'True / False', fillblank: 'Fill in the Blank' };
+  let inner = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span class="badge badge-purple">${typeLabels[type]}</span>
+        <span style="font-size:13px;color:var(--text3);font-family:'Syne',sans-serif;font-weight:600">Q${qCount}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <input type="number" placeholder="Marks" value="1" min="0.5" step="0.5" style="width:80px;padding:6px 10px;font-size:13px" id="marks-${qId}">
+        <button class="btn btn-danger btn-sm" onclick="removeQuestion('${qId}')">✕ Remove</button>
+      </div>
+    </div>
+    <div class="form-group"><label>Question Text</label><textarea rows="2" id="qtext-${qId}" placeholder="Enter your question..."></textarea></div>
+  `;
+  if (type === 'mcq') {
+    inner += `<label>Options (select correct answer)</label><div class="options-builder" id="opts-${qId}"></div><button class="btn btn-secondary btn-sm" onclick="addOption('${qId}')" style="margin-top:6px">+ Add Option</button>`;
+    inner += `<input type="hidden" id="qtype-${qId}" value="mcq">`;
+  } else if (type === 'saq') {
+    inner += `<div class="form-group"><label>Model Answer (shown after submission)</label><textarea rows="3" id="answer-${qId}" placeholder="Model answer for reference..."></textarea></div>`;
+    inner += `<input type="hidden" id="qtype-${qId}" value="saq">`;
+  } else if (type === 'truefalse') {
+    inner += `<label>Correct Answer</label><div style="display:flex;gap:12px;margin-top:8px"><label style="display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text)"><input type="radio" name="tf-${qId}" value="true" id="tf-t-${qId}"> True</label><label style="display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text)"><input type="radio" name="tf-${qId}" value="false" id="tf-f-${qId}" checked> False</label></div>`;
+    inner += `<input type="hidden" id="qtype-${qId}" value="truefalse">`;
+  } else if (type === 'fillblank') {
+    inner += `<div class="form-group" style="margin-top:12px"><label>Correct Answer</label><input type="text" id="answer-${qId}" placeholder="Expected answer..."></div>`;
+    inner += `<input type="hidden" id="qtype-${qId}" value="fillblank">`;
+  }
+  div.innerHTML = inner;
+  document.getElementById('questions-container').appendChild(div);
+  if (type === 'mcq') { addOption(qId); addOption(qId); addOption(qId); addOption(qId); }
+}
+let optCounts = {};
+function addOption(qId) {
+  optCounts[qId] = (optCounts[qId] || 0) + 1;
+  const oId = `opt-${qId}-${optCounts[qId]}`;
+  const letters = 'ABCDEFGH';
+  const letter = letters[(optCounts[qId]-1) % 8];
+  const row = document.createElement('div');
+  row.className = 'option-row'; row.id = oId;
+  row.innerHTML = `
+    <span style="width:24px;text-align:center;font-weight:700;font-size:13px;color:var(--accent);font-family:'Syne',sans-serif;flex-shrink:0">${letter}</span>
+    <input type="radio" name="correct-${qId}" value="${oId}" title="Mark as correct">
+    <input type="text" class="option-input" placeholder="Option ${letter}" id="opttext-${oId}">
+    <button class="remove-opt" onclick="document.getElementById('${oId}').remove()">✕</button>
+  `;
+  document.getElementById('opts-' + qId).appendChild(row);
+}
+function removeQuestion(qId) {
+  document.getElementById('qblock-' + qId)?.remove();
+  const c = document.getElementById('questions-container');
+  if (!c.querySelector('.q-card')) {
+    const e = document.createElement('div');
+    e.className = 'empty-state'; e.id = 'no-questions-msg';
+    e.innerHTML = '<div class="empty-icon">➕</div><div class="empty-text">No questions yet</div><div class="empty-sub">Click a button above to add questions</div>';
+    c.appendChild(e);
+  }
+}
+
+// ===== SAVE TEST =====
+function saveTest() {
+  const title = document.getElementById('test-title').value.trim();
+  if (!title) return toast('Please enter a test title', 'error');
+  const subject = document.getElementById('test-subject').value;
+  const duration = parseInt(document.getElementById('test-duration').value) || 30;
+  const desc = document.getElementById('test-desc').value.trim();
+  const questions = [];
+  document.querySelectorAll('#questions-container .q-card').forEach(card => {
+    const qId = card.id.replace('qblock-', '');
+    const type = document.getElementById('qtype-' + qId)?.value;
+    const text = document.getElementById('qtext-' + qId)?.value.trim();
+    const marks = parseFloat(document.getElementById('marks-' + qId)?.value) || 1;
+    if (!text || !type) return;
+    const q = { id: qId, type, text, marks };
+    if (type === 'mcq') {
+      const opts = [];
+      let correctId = null;
+      const checked = card.querySelector(`input[name="correct-${qId}"]:checked`);
+      if (checked) correctId = checked.value;
+      card.querySelectorAll('.option-row').forEach(row => {
+        const txt = row.querySelector('.option-input')?.value.trim();
+        if (txt) opts.push({ id: row.id, text: txt });
+      });
+      q.options = opts;
+      q.correct = correctId;
+      const correctOpt = opts.find(o => o.id === correctId);
+      q.correctText = correctOpt ? correctOpt.text : '';
+    } else if (type === 'saq' || type === 'fillblank') {
+      q.answer = document.getElementById('answer-' + qId)?.value.trim();
+    } else if (type === 'truefalse') {
+      const tf = card.querySelector(`input[name="tf-${qId}"]:checked`);
+      q.answer = tf ? tf.value : 'false';
+    }
+    questions.push(q);
+  });
+  if (!questions.length) return toast('Add at least one question', 'error');
+
+  if (editingTestId) {
+    const idx = DB.tests.findIndex(t => t.id === editingTestId);
+    if (idx > -1) {
+      DB.tests[idx] = { ...DB.tests[idx], title, subject, duration, desc, questions, updatedAt: new Date().toISOString() };
+      toast('Test updated successfully! ✓', 'success');
+    }
+    editingTestId = null;
+  } else {
+    const test = { id: 't' + DB.nextTestId++, title, subject, duration, desc, questions, createdAt: new Date().toISOString() };
+    DB.tests.push(test);
+    toast('Test published! ✓', 'success');
+  }
+  save();
+  clearTestForm();
+  renderAdminDashboard();
+}
+
+function clearTestForm() {
+  ['test-title','test-desc'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('test-duration').value = 30;
+  document.getElementById('questions-container').innerHTML = `<div class="empty-state" id="no-questions-msg"><div class="empty-icon">➕</div><div class="empty-text">No questions yet</div><div class="empty-sub">Click a button above to add questions</div></div>`;
+  qCount = 0; optCounts = {}; editingTestId = null;
+}
+
+// ===== SAVE NOTE =====
+function saveNote() {
+  const title = document.getElementById('note-title').value.trim();
+  const subject = document.getElementById('note-subject').value;
+  const tags = document.getElementById('note-tags').value.trim();
+  const content = document.getElementById('note-content').value.trim();
+  if (!title || !content) return toast('Please fill in title and content', 'error');
+  const note = { id: 'n' + DB.nextNoteId++, title, subject, tags, content, createdAt: new Date().toISOString() };
+  DB.notes.push(note);
+  save();
+  toast('Note published! ✓', 'success');
+  clearNoteForm();
+  renderAdminDashboard();
+}
+function clearNoteForm() {
+  ['note-title','note-tags','note-content'].forEach(id => document.getElementById(id).value = '');
+}
+
+// ===== RENDER HOME =====
+function renderHomePage() {
+  updateStats();
+  const grid = document.getElementById('home-tests-grid');
+  const tests = DB.tests.slice(-3).reverse();
+  if (!tests.length) {
+    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📋</div><div class="empty-text">No tests yet</div><div class="empty-sub">Admin will upload tests soon!</div></div>';
+    return;
+  }
+  grid.innerHTML = tests.map(t => `
+    <div class="card" onclick="startTest('${t.id}')">
+      <div class="card-icon" style="background:rgba(79,195,247,0.1);color:var(--accent)">📝</div>
+      <div style="margin-bottom:8px"><span class="badge badge-blue">${t.subject}</span></div>
+      <div class="card-title">${t.title}</div>
+      <div class="card-desc">${t.desc || 'No description'}</div>
+      <div class="card-meta">
+        <span style="font-size:12px;color:var(--text3)">⏱ ${t.duration} min</span>
+        <span style="font-size:12px;color:var(--text3)">❓ ${t.questions.length} questions</span>
+      </div>
+    </div>
+  `).join('');
+}
+function updateStats() {
+  const students = DB.users.filter(u => u.role !== 'admin').length;
+  document.getElementById('stat-tests').textContent = DB.tests.length;
+  document.getElementById('stat-students').textContent = students;
+  document.getElementById('stat-notes').textContent = DB.notes.length;
+}
+
+// ===== RENDER TESTS PAGE =====
+function renderTestsPage() {
+  renderSubjectChips('test-subject-filter', 'tests');
+  renderTestsList();
+}
+function renderSubjectChips(containerId, type) {
+  const subjects = [...new Set(
+    (type === 'tests' ? DB.tests : DB.notes).map(x => x.subject).filter(Boolean)
+  )];
+  const c = document.getElementById(containerId);
+  c.innerHTML = `<div class="subject-chip active" onclick="filter${type==='tests'?'Tests':'Notes'}('all',this)">All</div>` +
+    subjects.map(s => `<div class="subject-chip" onclick="filter${type==='tests'?'Tests':'Notes'}('${s}',this)">${s}</div>`).join('');
+}
+function filterTests(filter, el) {
+  activeTestFilter = filter;
+  if (el) {
+    document.querySelectorAll('#test-subject-filter .subject-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+  renderTestsList();
+}
+function renderTestsList() {
+  const search = document.getElementById('test-search-input')?.value.toLowerCase() || '';
+  let tests = DB.tests;
+  if (activeTestFilter && activeTestFilter !== 'all') tests = tests.filter(t => t.subject === activeTestFilter);
+  if (search) tests = tests.filter(t => t.title.toLowerCase().includes(search) || t.subject.toLowerCase().includes(search));
+  const c = document.getElementById('tests-list-container');
+  if (!tests.length) { c.innerHTML = '<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">No tests found</div></div>'; return; }
+  c.innerHTML = tests.reverse().map(t => {
+    const subs = DB.submissions.filter(s => s.testId === t.id);
+    const mySub = currentUser ? subs.find(s => s.userId === currentUser.id) : null;
+    return `
+      <div class="test-item">
+        <div class="test-item-info">
+          <div class="test-item-title">${t.title}</div>
+          <div class="test-item-meta">
+            <span class="badge badge-blue">${t.subject}</span>
+            <span>⏱ ${t.duration} min</span>
+            <span>❓ ${t.questions.length} Qs</span>
+            <span>👥 ${subs.length} attempts</span>
+            ${mySub ? `<span class="badge badge-green">Your score: ${mySub.score}/${mySub.total}</span>` : ''}
+          </div>
+        </div>
+        <div class="test-actions">
+          ${currentUser ? `<button class="btn btn-primary btn-sm" onclick="startTest('${t.id}')">Start Test →</button>` : `<button class="btn btn-secondary btn-sm" onclick="openAuthModal('login')">Login to Attempt</button>`}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+// ===== RENDER NOTES PAGE =====
+function renderNotesPage() {
+  renderSubjectChips('note-subject-filter', 'notes');
+  renderNotesList();
+}
+function filterNotes(filter, el) {
+  activeNoteFilter = filter;
+  if (el) {
+    document.querySelectorAll('#note-subject-filter .subject-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+  renderNotesList();
+}
+function renderNotesList() {
+  const search = document.getElementById('note-search-input')?.value.toLowerCase() || '';
+  let notes = DB.notes;
+  if (activeNoteFilter && activeNoteFilter !== 'all') notes = notes.filter(n => n.subject === activeNoteFilter);
+  if (search) notes = notes.filter(n => n.title.toLowerCase().includes(search) || n.content.toLowerCase().includes(search));
+  const g = document.getElementById('notes-grid');
+  if (!notes.length) { g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📚</div><div class="empty-text">No notes found</div></div>'; return; }
+  g.innerHTML = notes.reverse().map(n => `
+    <div class="note-card">
+      <div style="margin-bottom:8px"><span class="badge badge-purple">${n.subject}</span></div>
+      <div class="note-title">${n.title}</div>
+      <div class="note-body">${n.content}</div>
+      ${n.tags ? `<div style="margin-bottom:10px">${n.tags.split(',').map(t => `<span class="badge badge-gold" style="margin-right:4px">${t.trim()}</span>`).join('')}</div>` : ''}
+      <button class="btn btn-secondary btn-sm" onclick="viewNote('${n.id}')">Read Full →</button>
+    </div>
+  `).join('');
+}
+
+function viewNote(nId) {
+  const n = DB.notes.find(x => x.id === nId);
+  if (!n) return;
+  document.getElementById('note-view-content').innerHTML = `
+    <div style="margin-bottom:8px"><span class="badge badge-purple">${n.subject}</span></div>
+    <h2 style="font-family:'Syne',sans-serif;font-weight:800;font-size:22px;margin-bottom:16px">${n.title}</h2>
+    ${n.tags ? `<div style="margin-bottom:16px">${n.tags.split(',').map(t => `<span class="badge badge-gold" style="margin-right:4px">${t.trim()}</span>`).join('')}</div>` : ''}
+    <div style="font-size:14px;color:var(--text2);white-space:pre-wrap;line-height:1.8;background:var(--bg2);padding:20px;border-radius:var(--radius)">${n.content}</div>
+    <div style="font-size:12px;color:var(--text3);margin-top:12px">Published: ${new Date(n.createdAt).toLocaleDateString()}</div>
+  `;
+  document.getElementById('note-view-modal').classList.remove('hidden');
+}
+
+// ===== LEADERBOARD =====
+function renderLeaderboard() {
+  const scores = {};
+  DB.submissions.forEach(s => {
+    const user = DB.users.find(u => u.id === s.userId);
+    const name = user ? user.name : 'Unknown';
+    if (!scores[s.userId]) scores[s.userId] = { name, total: 0, count: 0 };
+    scores[s.userId].total += (s.score / s.total) * 100;
+    scores[s.userId].count++;
+  });
+  const ranked = Object.values(scores).map(x => ({ ...x, avg: (x.total / x.count).toFixed(1) })).sort((a,b) => b.avg - a.avg);
+  const c = document.getElementById('leaderboard-list');
+  if (!ranked.length) { c.innerHTML = '<div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-text">No scores yet</div><div class="empty-sub">Complete a test to appear here!</div></div>'; return; }
+  const ranks = ['gold','silver','bronze'];
+  c.innerHTML = ranked.map((r, i) => `
+    <div class="lb-item">
+      <div class="lb-rank ${ranks[i] || ''}">${i < 3 ? ['🥇','🥈','🥉'][i] : '#' + (i+1)}</div>
+      <div class="user-avatar" style="width:36px;height:36px;font-size:14px">${r.name[0].toUpperCase()}</div>
+      <div class="lb-name">${r.name}</div>
+      <div style="font-size:12px;color:var(--text3);margin-right:8px">${r.count} test${r.count!==1?'s':''}</div>
+      <div class="lb-score">${r.avg}%</div>
+    </div>
+  `).join('');
+}
+
+// ===== ADMIN DASHBOARD =====
+function renderAdminDashboard() {
+  const students = DB.users.filter(u => u.role !== 'admin').length;
+  document.getElementById('dash-tests').textContent = DB.tests.length;
+  document.getElementById('dash-notes').textContent = DB.notes.length;
+  document.getElementById('dash-students').textContent = students;
+  document.getElementById('dash-submissions').textContent = DB.submissions.length;
+  updateStats();
+  const rs = document.getElementById('recent-submissions');
+  const recent = DB.submissions.slice(-8).reverse();
+  if (!recent.length) { rs.innerHTML = '<div class="empty-state"><div class="empty-text">No submissions yet</div></div>'; return; }
+  rs.innerHTML = recent.map(s => {
+    const user = DB.users.find(u => u.id === s.userId);
+    const test = DB.tests.find(t => t.id === s.testId);
+    const pct = Math.round((s.score / s.total) * 100);
+    return `
+      <div class="test-item">
+        <div class="test-item-info">
+          <div class="test-item-title">${user ? user.name : 'Unknown'} — <span style="color:var(--text2)">${test ? test.title : 'Deleted test'}</span></div>
+          <div class="test-item-meta">
+            <span>Score: <strong style="color:var(--accent)">${s.score}/${s.total}</strong></span>
+            <span class="badge ${pct>=70?'badge-green':pct>=40?'badge-gold':'badge-red'}">${pct}%</span>
+            <span>${new Date(s.submittedAt).toLocaleDateString()}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+function renderAdminTests() {
+  const c = document.getElementById('admin-tests-list');
+  if (!DB.tests.length) { c.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><div class="empty-text">No tests yet</div></div>'; return; }
+  c.innerHTML = DB.tests.slice().reverse().map(t => `
+    <div class="test-item">
+      <div class="test-item-info">
+        <div class="test-item-title">${t.title}</div>
+        <div class="test-item-meta">
+          <span class="badge badge-blue">${t.subject}</span>
+          <span>⏱ ${t.duration} min</span>
+          <span>❓ ${t.questions.length} Qs</span>
+          <span>📅 ${new Date(t.createdAt).toLocaleDateString()}</span>
+        </div>
+      </div>
+      <div class="test-actions">
+        <button class="btn btn-secondary btn-sm" onclick="editTest('${t.id}')">✏️ Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteTest('${t.id}')">🗑 Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+function renderAdminNotes() {
+  const c = document.getElementById('admin-notes-list');
+  if (!DB.notes.length) { c.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📚</div><div class="empty-text">No notes yet</div></div>'; return; }
+  c.innerHTML = DB.notes.slice().reverse().map(n => `
+    <div class="note-card">
+      <div style="margin-bottom:8px"><span class="badge badge-purple">${n.subject}</span></div>
+      <div class="note-title">${n.title}</div>
+      <div class="note-body">${n.content}</div>
+      <div class="note-actions">
+        <button class="btn btn-secondary btn-sm" onclick="viewNote('${n.id}')">View</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteNote('${n.id}')">🗑 Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+function renderStudentsList() {
+  const students = DB.users.filter(u => u.role !== 'admin');
+  const c = document.getElementById('students-list');
+  if (!students.length) { c.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div><div class="empty-text">No students registered</div></div>'; return; }
+  c.innerHTML = students.map(s => {
+    const mySubs = DB.submissions.filter(x => x.userId === s.id);
+    const avg = mySubs.length ? Math.round(mySubs.reduce((a,b) => a + (b.score/b.total)*100, 0) / mySubs.length) : null;
+    return `
+      <div class="test-item">
+        <div style="display:flex;align-items:center;gap:12px;flex:1">
+          <div class="user-avatar">${s.name[0].toUpperCase()}</div>
+          <div>
+            <div style="font-weight:600;font-size:15px">${s.name}</div>
+            <div style="font-size:13px;color:var(--text2)">@${s.username} · ${mySubs.length} test${mySubs.length!==1?'s':''} taken</div>
+          </div>
+        </div>
+        <div>${avg !== null ? `<span class="badge badge-blue">Avg: ${avg}%</span>` : '<span class="badge badge-orange">No tests</span>'}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function deleteTest(id) {
+  if (!confirm('Delete this test? All submissions will also be removed.')) return;
+  DB.tests = DB.tests.filter(t => t.id !== id);
+  DB.submissions = DB.submissions.filter(s => s.testId !== id);
+  save(); toast('Test deleted', 'success'); renderAdminTests(); renderAdminDashboard();
+}
+function deleteNote(id) {
+  if (!confirm('Delete this note?')) return;
+  DB.notes = DB.notes.filter(n => n.id !== id);
+  save(); toast('Note deleted', 'success'); renderAdminNotes(); renderAdminDashboard();
+}
+function editTest(id) {
+  const t = DB.tests.find(x => x.id === id);
+  if (!t) return;
+  adminSection('create-test', document.querySelector('[onclick*="create-test"]'));
+  setTimeout(() => {
+    document.getElementById('test-title').value = t.title;
+    document.getElementById('test-subject').value = t.subject;
+    document.getElementById('test-duration').value = t.duration;
+    document.getElementById('test-desc').value = t.desc || '';
+    document.getElementById('questions-container').innerHTML = '';
+    document.getElementById('no-questions-msg')?.remove();
+    qCount = 0; optCounts = {};
+    t.questions.forEach(q => {
+      addQuestion(q.type);
+      const qId = 'q' + qCount;
+      document.getElementById('qtext-' + qId).value = q.text;
+      document.getElementById('marks-' + qId).value = q.marks || 1;
+      if (q.type === 'mcq') {
+        const optsC = document.getElementById('opts-' + qId);
+        optsC.innerHTML = '';
+        optCounts[qId] = 0;
+        q.options.forEach((opt, i) => {
+          addOption(qId);
+          const oId = `opt-${qId}-${i+1}`;
+          document.getElementById('opttext-' + oId).value = opt.text;
+          if (q.correctText === opt.text) {
+            const radio = document.querySelector(`input[name="correct-${qId}"][value="${oId}"]`);
+            if (radio) radio.checked = true;
+          }
+        });
+      } else if (q.type === 'truefalse') {
+        const radio = document.querySelector(`input[name="tf-${qId}"][value="${q.answer}"]`);
+        if (radio) radio.checked = true;
+      } else {
+        const ansEl = document.getElementById('answer-' + qId);
+        if (ansEl) ansEl.value = q.answer || '';
+      }
+    });
+    editingTestId = id;
+    toast('Test loaded for editing', 'success');
+  }, 100);
+}
+
+// ===== TAKE TEST =====
+function startTest(testId) {
+  if (!currentUser) { openAuthModal('login'); return; }
+  const t = DB.tests.find(x => x.id === testId);
+  if (!t) return toast('Test not found', 'error');
+  currentTest = t;
+  testAnswers = {};
+  showPage('take-test');
+  renderTakeTest();
+}
+
+function renderTakeTest() {
+  const t = currentTest;
+  let timeLeft = t.duration * 60;
+  clearInterval(timerInterval);
+
+  const inner = document.getElementById('take-test-inner');
+  inner.innerHTML = `
+    <button class="btn btn-secondary btn-sm" onclick="showPage('tests')" style="margin-bottom:24px">← Back to Tests</button>
+    <div class="test-header-card">
+      <span class="badge badge-blue">${t.subject}</span>
+      <h2 style="font-family:'Syne',sans-serif;font-size:24px;font-weight:800;margin:12px 0 6px">${t.title}</h2>
+      <p style="color:var(--text2);font-size:14px">${t.desc || ''}</p>
+      <p style="color:var(--text3);font-size:13px;margin-top:8px">⏱ ${t.duration} min &nbsp;·&nbsp; ❓ ${t.questions.length} questions</p>
+      <div class="test-timer" id="test-timer">--:--</div>
+    </div>
+    <div id="test-questions-render"></div>
+    <div style="text-align:center;margin:32px 0">
+      <button class="btn btn-primary" style="padding:14px 40px;font-size:16px" onclick="submitTest()">Submit Test ✦</button>
+    </div>
+  `;
+
+  const qc = document.getElementById('test-questions-render');
+  qc.innerHTML = t.questions.map((q, idx) => renderQuestion(q, idx)).join('');
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    const el = document.getElementById('test-timer');
+    if (el) {
+      const m = Math.floor(timeLeft / 60);
+      const s = timeLeft % 60;
+      el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      el.style.color = timeLeft < 60 ? 'var(--red)' : 'var(--accent)';
+    }
+    if (timeLeft <= 0) { clearInterval(timerInterval); submitTest(); }
+  }, 1000);
+}
+
+function renderQuestion(q, idx) {
+  let optHTML = '';
+  if (q.type === 'mcq') {
+    optHTML = `<div class="q-options">${q.options.map((o, i) => `
+      <div class="q-opt" id="qopt-${q.id}-${i}" onclick="selectMCQ('${q.id}',${i},'${o.id}')">
+        <div class="q-opt-circle">${'ABCDEFGH'[i]}</div>
+        <span>${o.text}</span>
+      </div>
+    `).join('')}</div>`;
+  } else if (q.type === 'truefalse') {
+    optHTML = `<div class="q-options">
+      <div class="q-opt" id="qopt-${q.id}-0" onclick="selectTF('${q.id}','true',0)"><div class="q-opt-circle">T</div><span>True</span></div>
+      <div class="q-opt" id="qopt-${q.id}-1" onclick="selectTF('${q.id}','false',1)"><div class="q-opt-circle">F</div><span>False</span></div>
+    </div>`;
+  } else if (q.type === 'saq') {
+    optHTML = `<textarea class="saq-textarea" id="saq-${q.id}" placeholder="Write your answer here..." oninput="testAnswers['${q.id}']=this.value"></textarea>`;
+  } else if (q.type === 'fillblank') {
+    optHTML = `<input type="text" id="fill-${q.id}" placeholder="Your answer..." oninput="testAnswers['${q.id}']=this.value" style="max-width:400px">`;
+  }
+  return `
+    <div class="q-card">
+      <div class="q-number">Question ${idx + 1} of ${currentTest.questions.length} &nbsp;·&nbsp; ${q.marks} mark${q.marks !== 1 ? 's' : ''}</div>
+      <div class="q-text">${q.text}</div>
+      ${optHTML}
+    </div>
+  `;
+}
+
+function selectMCQ(qId, idx, optId) {
+  testAnswers[qId] = optId;
+  const q = currentTest.questions.find(x => x.id === qId);
+  q.options.forEach((_, i) => {
+    const el = document.getElementById(`qopt-${qId}-${i}`);
+    if (el) el.classList.toggle('selected', i === idx);
+  });
+}
+function selectTF(qId, val, idx) {
+  testAnswers[qId] = val;
+  [0,1].forEach(i => {
+    const el = document.getElementById(`qopt-${qId}-${i}`);
+    if (el) el.classList.toggle('selected', i === idx);
+  });
+}
+
+function submitTest() {
+  clearInterval(timerInterval);
+  const t = currentTest;
+  let score = 0;
+  let totalMarks = t.questions.reduce((a, q) => a + (q.marks || 1), 0);
+  const results = t.questions.map(q => {
+    const given = testAnswers[q.id];
+    let correct = false;
+    if (q.type === 'mcq') {
+      const correctOpt = q.options.find(o => o.id === q.correct);
+      const givenOpt = q.options.find(o => o.id === given);
+      correct = given === q.correct;
+      return { qId: q.id, type: q.type, correct, given: givenOpt?.text || '—', answer: correctOpt?.text || '—', marks: q.marks || 1 };
+    } else if (q.type === 'truefalse') {
+      correct = given === q.answer;
+      return { qId: q.id, type: q.type, correct, given: given || '—', answer: q.answer, marks: q.marks || 1 };
+    } else if (q.type === 'fillblank') {
+      correct = (given || '').toLowerCase().trim() === (q.answer || '').toLowerCase().trim();
+      return { qId: q.id, type: q.type, correct, given: given || '—', answer: q.answer, marks: q.marks || 1 };
+    } else { // saq — no auto-grade, give full marks if answered
+      correct = given && given.trim().length > 3;
+      return { qId: q.id, type: q.type, correct, given: given || '—', answer: q.answer, marks: q.marks || 1, saq: true };
+    }
+  });
+  score = results.filter(r => r.correct).reduce((a, r) => a + r.marks, 0);
+  const sub = { id: 's' + Date.now(), testId: t.id, userId: currentUser.id, score, total: totalMarks, results, submittedAt: new Date().toISOString() };
+  // Remove old submission if retaking
+  DB.submissions = DB.submissions.filter(s => !(s.testId === t.id && s.userId === currentUser.id));
+  DB.submissions.push(sub);
+  save();
+  renderResult(sub, t, results);
+}
+
+function renderResult(sub, t, results) {
+  const pct = Math.round((sub.score / sub.total) * 100);
+  const correct = results.filter(r => r.correct).length;
+  const wrong = results.filter(r => !r.correct && r.given !== '—').length;
+  const skipped = results.filter(r => r.given === '—').length;
+  const grade = pct >= 90 ? '🏆 Excellent!' : pct >= 70 ? '✅ Good Job!' : pct >= 50 ? '📈 Keep Going!' : '📚 Needs Work';
+  const inner = document.getElementById('take-test-inner');
+  inner.innerHTML = `
+    <button class="btn btn-secondary btn-sm" onclick="showPage('tests')" style="margin-bottom:24px">← Back to Tests</button>
+    <div class="result-card">
+      <div style="font-size:32px;margin-bottom:8px">${grade}</div>
+      <div class="result-score">${pct}%</div>
+      <div class="result-label">${sub.score} / ${sub.total} marks • ${t.title}</div>
+      <div class="result-breakdown">
+        <div class="rb-item"><div class="rb-num" style="color:var(--green)">${correct}</div><div class="rb-lbl">Correct</div></div>
+        <div class="rb-item"><div class="rb-num" style="color:var(--red)">${wrong}</div><div class="rb-lbl">Wrong</div></div>
+        <div class="rb-item"><div class="rb-num" style="color:var(--text3)">${skipped}</div><div class="rb-lbl">Skipped</div></div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap">
+        <button class="btn btn-secondary btn-sm" onclick="toggleReview()">Review Answers</button>
+        <button class="btn btn-primary btn-sm" onclick="showPage('leaderboard')">🏆 Leaderboard</button>
+      </div>
+    </div>
+    <div id="review-section" class="hidden" style="margin-top:24px">
+      ${t.questions.map((q, idx) => {
+        const r = results.find(x => x.qId === q.id);
+        const isCorrect = r?.correct;
+        return `
+          <div class="q-card" style="border-color:${isCorrect ? 'rgba(105,240,174,0.3)' : 'rgba(255,82,82,0.3)'}">
+            <div class="q-number" style="color:${isCorrect ? 'var(--green)' : 'var(--red)'}">Q${idx+1} — ${isCorrect ? '✓ Correct' : '✗ Incorrect'}</div>
+            <div class="q-text">${q.text}</div>
+            ${r?.type === 'mcq' || r?.type === 'truefalse' || r?.type === 'fillblank' ? `
+              <div style="margin-top:8px;font-size:14px">
+                <div style="color:var(--text2)">Your answer: <span style="color:${isCorrect ? 'var(--green)' : 'var(--red)'};font-weight:600">${r.given}</span></div>
+                ${!isCorrect ? `<div style="color:var(--text2)">Correct: <span style="color:var(--green);font-weight:600">${r.answer}</span></div>` : ''}
+              </div>
+            ` : `
+              <div style="font-size:14px;margin-top:8px">
+                <div style="color:var(--text2)">Your answer: <span style="color:var(--accent)">${r?.given}</span></div>
+                <div style="color:var(--text2);margin-top:6px">Model answer: <span style="color:var(--green)">${q.answer || 'N/A'}</span></div>
+              </div>
+            `}
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+function toggleReview() {
+  document.getElementById('review-section')?.classList.toggle('hidden');
+}
+
+// ===== STUDENT DASHBOARD =====
+function renderStudentDash() {
+  if (!currentUser) return;
+  document.getElementById('std-avatar').textContent = currentUser.name[0].toUpperCase();
+  document.getElementById('std-welcome').textContent = 'Welcome back, ' + currentUser.name + '!';
+  document.getElementById('std-username-display').textContent = '@' + currentUser.username;
+  const subs = DB.submissions.filter(s => s.userId === currentUser.id);
+  document.getElementById('std-count').textContent = subs.length;
+  if (subs.length) {
+    const pcts = subs.map(s => (s.score / s.total) * 100);
+    document.getElementById('std-best').textContent = Math.round(Math.max(...pcts)) + '%';
+    document.getElementById('std-avg').textContent = Math.round(pcts.reduce((a,b) => a+b, 0) / pcts.length) + '%';
+  }
+  const hist = document.getElementById('student-history');
+  if (!subs.length) { hist.innerHTML = '<div class="empty-state"><div class="empty-icon">🎯</div><div class="empty-text">No tests taken yet</div></div>'; return; }
+  hist.innerHTML = subs.slice().reverse().map(s => {
+    const t = DB.tests.find(x => x.id === s.testId);
+    const pct = Math.round((s.score / s.total) * 100);
+    return `
+      <div class="test-item">
+        <div class="test-item-info">
+          <div class="test-item-title">${t ? t.title : 'Deleted test'}</div>
+          <div class="test-item-meta">
+            ${t ? `<span class="badge badge-blue">${t.subject}</span>` : ''}
+            <span>Score: <strong style="color:var(--accent)">${s.score}/${s.total}</strong></span>
+            <span class="badge ${pct>=70?'badge-green':pct>=40?'badge-gold':'badge-red'}">${pct}%</span>
+            <span>${new Date(s.submittedAt).toLocaleDateString()}</span>
+          </div>
+        </div>
+        ${t ? `<button class="btn btn-secondary btn-sm" onclick="startTest('${t.id}')">Retake</button>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+// ===== KEYBOARD / CLOSE =====
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    ['auth-modal','test-view-modal','note-view-modal'].forEach(id => closeModal(id));
+  }
+});
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.add('hidden'); });
+});
+
+// ===== INIT =====
+load();
+updateNavForUser();
+renderHomePage();
+
+// If user is already logged in, go to proper page
+if (currentUser) {
+  if (currentUser.role === 'admin') {
+    // stay on home unless explicitly navigating
+  }
+}
+</script>
+</body>
+</html>
